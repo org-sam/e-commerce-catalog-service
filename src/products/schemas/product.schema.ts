@@ -15,7 +15,10 @@ export class Product {
     price: number;
 
     @Prop({ required: true })
-    imageUrl: string;
+    image: string;
+
+    @Prop({ required: true })
+    category: string;
 
     @Prop({ default: 0 })
     stock: number;

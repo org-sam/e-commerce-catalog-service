@@ -8,33 +8,70 @@ export class ProductsService implements OnModuleInit {
     constructor(@InjectModel(Product.name) private productModel: Model<Product>) { }
 
     async onModuleInit() {
-        // Seed data if empty
+        // Clear existing data to ensure we have the correct schema and data
+        // In a real production app, we would use a migration script instead
         const count = await this.productModel.countDocuments();
-        if (count === 0) {
+
+        // Check if we have the old "iPhone" data or empty db
+        const oldData = await this.productModel.findOne({ name: 'iPhone 15 Pro' });
+
+        if (count === 0 || oldData) {
+            if (oldData) {
+                await this.productModel.deleteMany({});
+                console.log('Cleared legacy product data');
+            }
+
             await this.productModel.create([
                 {
-                    name: 'iPhone 15 Pro',
-                    description: 'The ultimate iPhone.',
-                    price: 999,
-                    imageUrl: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-black-titanium-select-202309?wid=940&hei=1112&fmt=png-alpha&.v=1692879353411',
-                    stock: 100,
-                },
-                {
-                    name: 'MacBook Pro 14"',
-                    description: 'Mind-blowing. Head-turning.',
-                    price: 1999,
-                    imageUrl: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp14-spacegray-select-202110?wid=904&hei=843&fmt=jpeg&qlt=90&.v=1632788573000',
+                    name: 'Cloud Server Instance',
+                    description: 'High-performance EC2 instance for demanding workloads. Auto-scaling enabled.',
+                    price: 299.99,
+                    image: '/placeholder.svg',
+                    category: 'Compute',
                     stock: 50,
                 },
                 {
-                    name: 'AirPods Pro',
-                    description: 'Magic like you’ve never heard.',
-                    price: 249,
-                    imageUrl: 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MTJV3?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1694014871985',
+                    name: 'Managed PostgreSQL',
+                    description: 'Fully managed relational database with automatic backups and replication.',
+                    price: 149.99,
+                    image: '/placeholder.svg',
+                    category: 'Database',
+                    stock: 100,
+                },
+                {
+                    name: 'S3 Storage Bundle',
+                    description: '1TB object storage with CDN integration and lifecycle policies.',
+                    price: 49.99,
+                    image: '/placeholder.svg',
+                    category: 'Storage',
                     stock: 200,
                 },
+                {
+                    name: 'Kubernetes Cluster',
+                    description: 'Managed EKS cluster with auto-scaling node groups and monitoring.',
+                    price: 599.99,
+                    image: '/placeholder.svg',
+                    category: 'Compute',
+                    stock: 25,
+                },
+                {
+                    name: 'Message Queue Pro',
+                    description: 'SQS + RabbitMQ bundle for reliable async messaging at scale.',
+                    price: 79.99,
+                    image: '/placeholder.svg',
+                    category: 'Messaging',
+                    stock: 150,
+                },
+                {
+                    name: 'MongoDB Atlas',
+                    description: 'NoSQL document database with global distribution and real-time sync.',
+                    price: 199.99,
+                    image: '/placeholder.svg',
+                    category: 'Database',
+                    stock: 80,
+                },
             ]);
-            console.log('Seeded initial products');
+            console.log('Seeded Cloud Infrastructure products');
         }
     }
 
