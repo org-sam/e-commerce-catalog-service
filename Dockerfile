@@ -1,5 +1,7 @@
 FROM node:22-alpine
 
+ENV MONGO_URI="mongodb://appuser:appsenha123@mongodb-dev-demo.database.svc.cluster.local:27017/appdb"
+
 WORKDIR /app
 
 COPY package*.json ./
